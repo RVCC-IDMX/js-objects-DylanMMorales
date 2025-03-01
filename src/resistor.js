@@ -62,7 +62,11 @@
  * then use the copied object like a lookup table
  */
 function getColorValue(color) {
-  // write your code here & return value
+  const colorCodes = {
+    black: 0, brown: 1, red: 2, orange: 3, yellow: 4,
+    green: 5, blue: 6, violet: 7, grey: 8, white: 9
+  };
+  return colorCodes[color];
 }
 
 /**
@@ -79,7 +83,12 @@ function getColorValue(color) {
  * then use the copied object like a lookup table
  */
 function getMultiplierValue(color) {
-  // write your code here & return value
+  const multiplierCodes = {
+    black: 1, brown: 10, red: 100, orange: 1000, yellow: 10000,
+    green: 100000, blue: 1000000, violet: 10000000, grey: 100000000,
+    white: 1000000000, gold: 0.1, silver: 0.01
+  };
+  return multiplierCodes[color];
 }
 
 /**
@@ -106,7 +115,16 @@ function getMultiplierValue(color) {
  *
  */
 function getThreeBandValue(bands) {
-  // write your code here & return value
+  let value = (getColorValue(bands.color1) * 10 + getColorValue(bands.color2)) * getMultiplierValue(bands.multiplier);
+
+  if (bands.multiplier === 'gold') {
+    return Math.floor(value * 10) / 10;
+  }
+  if (bands.multiplier === 'silver') {
+    return Math.floor(value * 100) / 100;
+  }
+
+  return value;
 }
 
 /**
@@ -131,7 +149,10 @@ function getThreeBandValue(bands) {
  *
  */
 function formatNumber(val) {
-  // write your code here & return value
+  if (val >= 1e9) return (val / 1e9) + 'G';
+  if (val >= 1e6) return (val / 1e6) + 'M';
+  if (val >= 1e3) return (val / 1e3) + 'k';
+  return val.toString();
 }
 
 /**
@@ -150,7 +171,11 @@ function formatNumber(val) {
  * example: 'green' => '±0.5%'
  */
 function getTolerance(color) {
-  // write your code here & return value
+  const toleranceCodes = {
+    brown: '±1%', red: '±2%', green: '±0.5%', blue: '±0.25%',
+    violet: '±0.1%', grey: '±0.05%', gold: '±5%', silver: '±10%'
+  };
+  return toleranceCodes[color];
 }
 
 /**
@@ -182,7 +207,11 @@ function getTolerance(color) {
  * must use functions in this file to build the string using a template literal
  */
 function getResistorOhms(bands) {
-  // write your code here & return value
+  let value = getThreeBandValue(bands);
+  let formattedValue = formatNumber(value);
+  let tolerance = getTolerance(bands.tolerance);
+
+  return `Resistor value: ${formattedValue} Ohms ${tolerance}`;
 }
 
 module.exports = {
